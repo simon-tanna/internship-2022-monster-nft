@@ -1,17 +1,47 @@
-import { Box, Button, chakra, Flex, HStack, Spacer } from "@chakra-ui/react";
-
+import {
+	Box,
+	Button,
+	chakra,
+	Flex,
+	HStack,
+	Link,
+	Spacer,
+	useDisclosure,
+	IconButton,
+	Stack,
+} from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
 const NavBar = () => {
-
-
+	const { isOpen, onOpen, onClose } = useDisclosure();
 	return (
 		<NavBarContainer>
 			<NavBarOptionsContainer spacing="25px" justifyContent="flex-start">
-				{NavBarData.map((linkItem) => (
-					<Button key={linkItem.link} href={linkItem.link}>
-						{linkItem.title}
-					</Button>
-				))}
+				<IconButton
+					size={"md"}
+					icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+					aria-label={"Open Menu"}
+					display={{ md: "none" }}
+					onClick={isOpen ? onClose : onOpen}
+				/>
+				{isOpen ? (
+					<Box pb={4} display={{ md: "none" }}>
+						<Stack as={"nav"} spacing={4}>
+							{NavBarData.map((linkItem) => (
+								<Link key={linkItem.link} href={linkItem.link}>
+									{linkItem.title}
+								</Link>
+							))}
+						</Stack>
+					</Box>
+				) : null}
+				<HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
+					{NavBarData.map((linkItem) => (
+						<Link key={linkItem.link} href={linkItem.link}>
+							{linkItem.title}
+						</Link>
+					))}
+				</HStack>
 			</NavBarOptionsContainer>
 			<Spacer />
 			<NavBarOptionsContainer spacing="25px" justifyContent="flex-end">
@@ -31,7 +61,7 @@ const NavBarContainer = chakra(Flex, {
 		height: "80px",
 		paddingX: "25px",
 		marginX: "50px",
-		backgroundColor: "#F3F2ED",
+		backgroundColor: "#e44949",
 		rounded: "15px",
 		flexGrow: 1,
 		top: "10px",
@@ -50,6 +80,7 @@ const NavBarData = [
 	{ title: "Monster Bios", link: "/monster-bios" },
 	{ title: "About", link: "/about" },
 	{ title: "All Monsters", link: "/all-monsters" },
+	{ title: "Minting", link: "/minting" },
 ];
 
 export default NavBar;
