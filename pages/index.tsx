@@ -8,11 +8,14 @@ import TransferERC20 from "../components/TransferERC20";
 declare let window: any;
 
 const Index: NextPage = () => {
+
+  // set state of variables in application
 	const [currentAccount, setCurrentAccount] = useState<string | undefined>();
 	const [chainId, setChainId] = useState<number | undefined>();
 	const [balance, setBalance] = useState<string | undefined>();
 	const [chainname, setChainName] = useState<string | undefined>();
 
+  // sets intitial values assigned to wallet owner. updates when wallet account status changes
 	useEffect(() => {
 		if (!currentAccount || !ethers.utils.isAddress(currentAccount)) return;
 		if (!window.ethereum) return;
@@ -26,6 +29,7 @@ const Index: NextPage = () => {
 		});
 	}, [currentAccount]);
 
+  // The onClick functions allowing user to connect or disconnect metamask account
 	const onConnect = () => {
 		if (!window.ethereum) {
 			console.log("Please install MetaMask");
@@ -77,17 +81,19 @@ const Index: NextPage = () => {
 					)}
 					<Box mb={0} p={4} w="100%" borderWidth="1px" borderRadius="lg">
 						<Heading my={4} fontSize="xl">
-							Read ClassToken Info
+							Read Monster Coin Info
 						</Heading>
 						<ERC20
+            // Deployed ERC20 contract address will go here
 							addressContract="0x5fbdb2315678afecb367f032d93f642f64180aa3"
 							currentAccount={currentAccount}
 						/>
 						<Box mb={0} p={4} w="100%" borderWidth="1px" borderRadius="lg">
 							<Heading my={4} fontSize="xl">
-								Transfer Classtoken
+								Transfer Monster Coin
 							</Heading>
 							<TransferERC20
+              // Deployed ERC20 contract address will go here
 								addressContract="0x5FbDB2315678afecb367f032d93F642f64180aa3"
 								currentAccount={currentAccount}
 							/>

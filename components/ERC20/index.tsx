@@ -62,10 +62,10 @@ export default function ERC20(props: Props) {
 				<b>ERC20 Contract:</b> {addressContract}
 			</Text>
 			<Text>
-				<b>ClassToken totalSupply:</b> {totalSupply} {symbol}
+				<b>Monster Coin totalSupply:</b> {totalSupply} {symbol}
 			</Text>
 			<Text my={4}>
-				<b>ClassToken in current account:</b> {balance} {symbol}
+				<b>Monster Coin in current account:</b> {balance} {symbol}
 			</Text>
 		</div>
 	);

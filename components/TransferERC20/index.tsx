@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-	Text,
 	Button,
 	Input,
 	NumberInput,
@@ -8,11 +7,22 @@ import {
 	FormControl,
 	FormLabel,
 } from "@chakra-ui/react";
+import { ethers } from "ethers";
+import { parseEther } from "ethers/lib/utils";
+import { ERC20ABI as abi } from "../../abi/ERC20ABI";
+import { Contract } from "ethers";
+import {
+	TransactionResponse,
+	TransactionReceipt,
+} from "@ethersproject/abstract-provider";
+import { sign } from "crypto";
 
 interface Props {
 	addressContract: string;
 	currentAccount: string | undefined;
 }
+
+declare let window: any;
 
 export default function TransferERC20(props: Props) {
 	const addressContract = props.addressContract;
@@ -22,7 +32,20 @@ export default function TransferERC20(props: Props) {
 
 	async function submitTransfer(event: React.FormEvent) {
 		event.preventDefault();
-		console.log("transfer requested");
+		if (!window.ethereum) return;
+		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		const signer = provider.getSigner();
+		const erc20: Contract = new ethers.Contract(addressContract, abi, signer);
+
+		erc20
+			.transfer(toAddress, parseEther(amount))
+			.then((tr: TransactionResponse) => {
+				console.log(`TransactionResponse TX hash: ${tr.hash}`);
+				tr.wait().then((receipt: TransactionReceipt) => {
+					console.log("Transaction Receipt", receipt);
+				});
+			})
+			.catch((e: Error) => console.log(e));
 	}
 
 	const handleChange = (value: string) => setAmount(value);
@@ -48,7 +71,7 @@ export default function TransferERC20(props: Props) {
 					my={2}
 				/>
 				<Button type="submit" isDisabled={!currentAccount}>
-					Get Coin
+					Get Monster Coin
 				</Button>
 			</FormControl>
 		</form>
