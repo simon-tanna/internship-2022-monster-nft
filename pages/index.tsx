@@ -3,6 +3,7 @@ import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import ERC20 from "../components/ERC20";
+import TransferERC20 from "../components/TransferERC20";
 
 declare let window: any;
 
@@ -82,6 +83,15 @@ const Index: NextPage = () => {
 							addressContract="0x5fbdb2315678afecb367f032d93f642f64180aa3"
 							currentAccount={currentAccount}
 						/>
+						<Box mb={0} p={4} w="100%" borderWidth="1px" borderRadius="lg">
+							<Heading my={4} fontSize="xl">
+								Transfer Classtoken
+							</Heading>
+							<TransferERC20
+								addressContract="0x5FbDB2315678afecb367f032d93F642f64180aa3"
+								currentAccount={currentAccount}
+							/>
+						</Box>
 					</Box>
 				</VStack>
 			</Flex>
