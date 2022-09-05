@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
+import ERC20 from "../components/ERC20";
 
 declare let window: any;
 
@@ -73,6 +74,15 @@ const Index: NextPage = () => {
 					) : (
 						<></>
 					)}
+					<Box mb={0} p={4} w="100%" borderWidth="1px" borderRadius="lg">
+						<Heading my={4} fontSize="xl">
+							Read ClassToken Info
+						</Heading>
+						<ERC20
+							addressContract="0x5fbdb2315678afecb367f032d93f642f64180aa3"
+							currentAccount={currentAccount}
+						/>
+					</Box>
 				</VStack>
 			</Flex>
 		</Flex>
