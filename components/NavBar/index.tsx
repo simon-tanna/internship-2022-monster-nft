@@ -1,6 +1,9 @@
-import { Button, chakra, Flex, HStack } from "@chakra-ui/react";
+import { Box, Button, chakra, Flex, HStack, Spacer } from "@chakra-ui/react";
+
 
 const NavBar = () => {
+
+
 	return (
 		<NavBarContainer>
 			<NavBarOptionsContainer spacing="25px" justifyContent="flex-start">
@@ -9,6 +12,12 @@ const NavBar = () => {
 						{linkItem.title}
 					</Button>
 				))}
+			</NavBarOptionsContainer>
+			<Spacer />
+			<NavBarOptionsContainer spacing="25px" justifyContent="flex-end">
+				<Box>
+					<Button>Connect to MetaMask</Button>
+				</Box>
 			</NavBarOptionsContainer>
 		</NavBarContainer>
 	);
@@ -42,6 +51,5 @@ const NavBarData = [
 	{ title: "About", link: "/about" },
 	{ title: "All Monsters", link: "/all-monsters" },
 ];
-
 
 export default NavBar;
