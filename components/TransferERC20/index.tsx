@@ -15,7 +15,6 @@ import {
 	TransactionResponse,
 	TransactionReceipt,
 } from "@ethersproject/abstract-provider";
-import { sign } from "crypto";
 
 interface Props {
 	addressContract: string;

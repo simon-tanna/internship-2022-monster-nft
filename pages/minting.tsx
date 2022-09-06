@@ -11,6 +11,7 @@ import {
 import React from "react";
 
 const Minting = () => {
+
 	const imageArray = [
 		{ number: 1, name: "one", image: "1" },
 		{ number: 2, name: "two", image: "2" },
@@ -18,6 +19,8 @@ const Minting = () => {
 		{ number: 4, name: "four", image: "4" },
 		{ number: 5, name: "five", image: "5" },
 	];
+	
+	
 
 	return (
 		<Flex height="100vh" justifyContent="center">
