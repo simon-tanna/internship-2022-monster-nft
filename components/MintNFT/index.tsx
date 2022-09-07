@@ -8,6 +8,7 @@ import {
 	TransactionResponse,
 	TransactionReceipt,
 } from "@ethersproject/abstract-provider";
+import axios from "axios";
 
 interface Props {
 	addressContract: string;
@@ -25,24 +26,71 @@ export default function MintMonsterNFT(props: Props) {
 	async function requestNFT(event: React.FormEvent) {
 		event.preventDefault();
 		if (!window.ethereum) return;
-		const provider = new ethers.providers.Web3Provider(window.ethereum);
-		const signer = provider.getSigner();
-		const erc721: Contract = new ethers.Contract(
-			addressContract,
-			NFT.abi,
-			signer
-		);
+		try {
+			const provider = new ethers.providers.Web3Provider(window.ethereum);
+			const signer = provider.getSigner();
+			const erc721: Contract = new ethers.Contract(
+				addressContract,
+				NFT.abi,
+				signer
+			);
 
-		erc721
-			.createsvgNFT()
-			.then((tr: TransactionResponse) => {
-				console.log(`Minting Monster... ${tr.hash}`);
-				tr.wait().then((receipt: TransactionReceipt) => {
-					console.log(`Your Monster Receipt: ${receipt}`);
-				});
-			})
-			.catch((e: Error) => console.log(e));
+			// erc721
+			// 	.createsvgNFT()
+			// 	.then((tr: TransactionResponse) => {
+			// 		console.log(`Minting Monster... ${tr.hash}`);
+			// 		tr.wait().then((receipt: TransactionReceipt) => {
+			// 			console.log(`Your Monster Receipt: ${receipt}`);
+			// 		});
+			// 	})
+			// 	.catch((e: Error) => console.log(e));
+
+			let nftTransaction = await erc721.createsvgNFT();
+			console.log("Minting Monster....", nftTransaction.hash);
+			// set minting status here if required
+
+			let newMonster = await nftTransaction.wait();
+			// set loading status here if required
+			console.log("Minted: ", newMonster);
+			// assign tokenID
+			let mintingEvent = newMonster.events[0];
+			let value = mintingEvent.args[2];
+			let tokenId = value.toNumber();
+
+			console.log(
+				`Minted: See transaction at https://mumbai.polygonscan.com/address/${nftTransaction.hash}`
+			);
+
+			getNFTData(tokenId);
+		} catch (error) {
+			console.log("Minting Error", error);
+			//set error message here if needed
+		}
 	}
+
+	// function that returns the minted NFT Data
+	const getNFTData = async (tokenId: string) => {
+		if (!window.ethereum) return;
+		try {
+			const provider = new ethers.providers.Web3Provider(window.ethereum);
+			const signer = provider.getSigner();
+			const erc721: Contract = new ethers.Contract(
+				addressContract,
+				NFT.abi,
+				signer
+			);
+
+			let tokenUri = await erc721.tokenURI(tokenId);
+			let data = await axios.get(tokenUri);
+			let metadata = data.data;
+
+			// set minting status here if necessary
+			setMonsterNFT(metadata.image);
+		} catch (error) {
+			console.log(error);
+			// set error status in state if necessary
+		}
+	};
 }
 
 // contract address is 0x222830B9f06464971d0C63Bf36FBE81664Ea8A66
