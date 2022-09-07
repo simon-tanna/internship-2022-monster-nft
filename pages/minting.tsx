@@ -13,6 +13,7 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { nftContractAddress } from "../utils/contracts";
+import MintMonsterNFT from "../components/MintNFT";
 
 // Logic is needed to check if user is on correct network
 
@@ -115,9 +116,10 @@ const Minting: NextPage = () => {
 				) : (
 					<></>
 				)}
-				<Button border="4px" m={3}>
-					Mint Your Monster!
-				</Button>
+				<MintMonsterNFT
+					addressContract={nftContractAddress}
+					currentAccount={currentAccount}
+				/>
 			</Flex>
 		</Flex>
 	);

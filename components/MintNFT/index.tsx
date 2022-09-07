@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { VStack, Box, Heading, Button } from "@chakra-ui/react";
+import { VStack, Box, Heading, Button, Image } from "@chakra-ui/react";
 // ABI imported from artifact.
 import NFT from "../../abi/svgNFT.json";
 import { Contract, ethers } from "ethers";
-import { nftContractAddress } from "../../utils/contracts";
-import {
-	TransactionResponse,
-	TransactionReceipt,
-} from "@ethersproject/abstract-provider";
+// import { nftContractAddress } from "../../utils/contracts";
+// import {
+// 	TransactionResponse,
+// 	TransactionReceipt,
+// } from "@ethersproject/abstract-provider";
 import axios from "axios";
 
 interface Props {
@@ -44,7 +44,7 @@ export default function MintMonsterNFT(props: Props) {
 			// 	})
 			// 	.catch((e: Error) => console.log(e));
 
-			let nftTransaction = await erc721.createsvgNFT();
+			let nftTransaction = await erc721.createknft();
 			console.log("Minting Monster....", nftTransaction.hash);
 			// set minting status here if required
 
@@ -91,18 +91,28 @@ export default function MintMonsterNFT(props: Props) {
 		}
 	};
 
-    return (
-        <VStack>
-            <Box w="100%" my={1}>
-                <Heading my={3} fontSize="l">
-                    Mint Your Monster
-                </Heading>
-                <Button type="button" onClick={requestNFT}>
-                    Mint Your Monster
-                </Button>
-            </Box>
-        </VStack>
-    )
+	return (
+		<VStack>
+			<Box w="100%" my={1}>
+				<Heading my={3} fontSize="l">
+					Mint Your Monster
+				</Heading>
+				<Button type="button" onClick={requestNFT}>
+					Mint Your Monster
+				</Button>
+			</Box>
+			<Box w="100%" my={1}>
+				<Heading my={3} fontSize="l">
+					Your Monster
+				</Heading>
+				{monsterNFT !== null ? (
+					<Image src={monsterNFT} alt="a Monster" />
+				) : (
+					<></>
+				)}
+			</Box>
+		</VStack>
+	);
 }
 
 // contract address is 0x222830B9f06464971d0C63Bf36FBE81664Ea8A66
