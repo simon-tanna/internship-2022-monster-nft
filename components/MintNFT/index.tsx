@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text } from "@chakra-ui/react";
+import { VStack, Box, Heading, Button } from "@chakra-ui/react";
 // ABI imported from artifact.
 import NFT from "../../abi/svgNFT.json";
 import { Contract, ethers } from "ethers";
@@ -23,8 +23,7 @@ export default function MintMonsterNFT(props: Props) {
 	const [monsterNFT, setMonsterNFT] = useState<string | null>(null);
 
 	// function that invokes mint NFT
-	async function requestNFT(event: React.FormEvent) {
-		event.preventDefault();
+	async function requestNFT() {
 		if (!window.ethereum) return;
 		try {
 			const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -91,6 +90,19 @@ export default function MintMonsterNFT(props: Props) {
 			// set error status in state if necessary
 		}
 	};
+
+    return (
+        <VStack>
+            <Box w="100%" my={1}>
+                <Heading my={3} fontSize="l">
+                    Mint Your Monster
+                </Heading>
+                <Button type="button" onClick={requestNFT}>
+                    Mint Your Monster
+                </Button>
+            </Box>
+        </VStack>
+    )
 }
 
 // contract address is 0x222830B9f06464971d0C63Bf36FBE81664Ea8A66
