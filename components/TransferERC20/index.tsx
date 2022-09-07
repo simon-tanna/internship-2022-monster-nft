@@ -7,10 +7,9 @@ import {
 	FormControl,
 	FormLabel,
 } from "@chakra-ui/react";
-import { ethers } from "ethers";
+import { ethers, Contract } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { ERC20ABI as abi } from "../../abi/ERC20ABI";
-import { Contract } from "ethers";
 import {
 	TransactionResponse,
 	TransactionReceipt,
