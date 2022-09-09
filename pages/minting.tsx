@@ -1,14 +1,25 @@
+import {
+	Box,
+	Flex,
+	Heading,
+	Image,
+	Text,
+	Stack,
+	Button,
+	Spacer,
+} from "@chakra-ui/react";
+import React from "react";
 import type { NextPage } from "next";
-import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import ERC20 from "../components/ERC20";
-import TransferERC20 from "../components/TransferERC20";
+import { nftContractAddress } from "../utils/contracts";
+import MintMonsterNFT from "../components/MintNFT";
+
+// Logic is needed to check if user is on correct network
 
 declare let window: any;
 
-const Index: NextPage = () => {
-	// set state of variables in application
+const Minting: NextPage = () => {
 	const [currentAccount, setCurrentAccount] = useState<string | undefined>();
 	const [chainId, setChainId] = useState<number | undefined>();
 	const [balance, setBalance] = useState<string | undefined>();
@@ -49,59 +60,69 @@ const Index: NextPage = () => {
 		setBalance(undefined);
 		setCurrentAccount(undefined);
 	};
+
+	const imageArray = [
+		{ number: 1, name: "one", image: "1" },
+		{ number: 2, name: "two", image: "2" },
+		{ number: 3, name: "three", image: "3" },
+		{ number: 4, name: "four", image: "4" },
+		{ number: 5, name: "five", image: "5" },
+	];
+
 	return (
-		<Flex height="100vh" alignItems="center" justifyContent="center">
-			<Flex direction="column" background="gray.100" p={12} rounded={6}>
-				<Heading mb={6}>Monster Coin Faucet</Heading>
-				<VStack>
-					<Box w="100%" my={1}>
-						{currentAccount ? (
-							<Button type="button" w="100%" onClick={onDisconnect}>
-								Account:{currentAccount}
-							</Button>
-						) : (
-							<Button type="button" w="100%" onClick={onConnect}>
-								Connect to MetaMask
-							</Button>
-						)}
-					</Box>
-					{currentAccount ? (
-						<Box mb={0} p={4} w="100%" borderWidth="1px" borderRadius="lg">
-							<Heading my={4} fontSize="xl">
-								Account info
-							</Heading>
-							<Text>ETH Balance of current account: {balance}</Text>
-							<Text>
-								Chain Info: ChainId {chainId} name {chainname}
-							</Text>
+		<Flex height="100vh" justifyContent="center">
+			<Flex
+				direction="column"
+				background="gray.100"
+				p={12}
+				rounded={6}
+				alignItems="center"
+			>
+				<Heading mb={6}>Mint Your Monster NFT</Heading>
+				<Stack direction="row">
+					{imageArray.map((item, index) => (
+						<Box key={index}>
+							<Image
+								boxSize="100px"
+								objectFit="cover"
+								src={`${item.image}.jpg`}
+								alt={item.name}
+							/>
+							<Text>{item.number}</Text>
 						</Box>
+					))}
+				</Stack>
+				<Box w="100%" my={1}>
+					{currentAccount ? (
+						<Button type="button" w="100%" onClick={onDisconnect}>
+							Account:{currentAccount}
+						</Button>
 					) : (
-						<></>
+						<Button type="button" w="100%" onClick={onConnect}>
+							Connect to MetaMask
+						</Button>
 					)}
+				</Box>
+				{currentAccount ? (
 					<Box mb={0} p={4} w="100%" borderWidth="1px" borderRadius="lg">
 						<Heading my={4} fontSize="xl">
-							Read Monster Coin Info
+							Account info
 						</Heading>
-						<ERC20
-							// Deployed ERC20 contract address will go here
-							addressContract="0x5fbdb2315678afecb367f032d93f642f64180aa3"
-							currentAccount={currentAccount}
-						/>
-						<Box mb={0} p={4} w="100%" borderWidth="1px" borderRadius="lg">
-							<Heading my={4} fontSize="xl">
-								Transfer Monster Coin
-							</Heading>
-							<TransferERC20
-								// Deployed ERC20 contract address will go here
-								addressContract="0x5FbDB2315678afecb367f032d93F642f64180aa3"
-								currentAccount={currentAccount}
-							/>
-						</Box>
+						<Text>Matic Balance of current account: {balance}</Text>
+						<Text>
+							Chain Info: ChainId {chainId} name {chainname}
+						</Text>
 					</Box>
-				</VStack>
+				) : (
+					<></>
+				)}
+				<MintMonsterNFT
+					addressContract={nftContractAddress}
+					currentAccount={currentAccount}
+				/>
 			</Flex>
 		</Flex>
 	);
 };
 
-export default Index;
+export default Minting;
